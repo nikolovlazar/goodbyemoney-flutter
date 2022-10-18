@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return const CupertinoApp(
         title: 'Expense Tracker',
         theme: CupertinoThemeData(
-            primaryColor: Color.fromARGB(255, 73, 149, 236),
+            primaryColor: Color.fromARGB(255, 41, 141, 255),
             brightness: Brightness.dark),
         home: TabsController());
   }

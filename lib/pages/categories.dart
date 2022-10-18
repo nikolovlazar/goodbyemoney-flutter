@@ -1,10 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-
-import '../types/widgets.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 
 class Categories extends StatefulWidget {
   const Categories({super.key});
@@ -41,17 +37,19 @@ class _CategoriesState extends State<Categories> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        navigationBar: const CupertinoNavigationBar(
-          leading: CupertinoNavigationBarBackButton(),
-          middle: Text("Categories", style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.black,
+        navigationBar: CupertinoNavigationBar(
+          leading: CupertinoNavigationBarBackButton(
+              onPressed: () => Navigator.pop(context)),
+          middle: const Text("Categories",
+              style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
+          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
         ),
         child: Container(
           width: double.infinity,
           height: double.infinity,
           transformAlignment: Alignment.center,
           padding: const EdgeInsets.fromLTRB(0, 16, 0, 16),
-          color: Colors.black,
+          color: const Color.fromARGB(255, 0, 0, 0),
           child: Column(children: [
             Expanded(
                 child: CupertinoFormSection.insetGrouped(children: [
@@ -85,14 +83,24 @@ class _CategoriesState extends State<Categories> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          showDialog(
+                          showCupertinoDialog(
                             context: context,
-                            builder: (context) => AlertDialog(
+                            builder: (context) => CupertinoAlertDialog(
                               title: const Text('Pick a category color'),
                               content: SingleChildScrollView(
                                 child: ColorPicker(
-                                  pickerColor: pickerColor,
+                                  color: pickerColor,
                                   onColorChanged: changeColor,
+                                  heading: const Text('Select color'),
+                                  subheading: const Text('Select color shade'),
+                                  wheelSubheading: const Text(
+                                      'Selected color and its shades'),
+                                  pickersEnabled: const <ColorPickerType, bool>{
+                                    ColorPickerType.primary: true,
+                                    ColorPickerType.accent: true,
+                                    ColorPickerType.custom: true,
+                                    ColorPickerType.wheel: true,
+                                  },
                                 ),
                               ),
                               actions: <Widget>[
@@ -113,7 +121,10 @@ class _CategoriesState extends State<Categories> {
                             decoration: BoxDecoration(
                               color: pickerColor,
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 4),
+                              border: Border.all(
+                                  color:
+                                      const Color.fromARGB(255, 255, 255, 255),
+                                  width: 2),
                             )),
                       ),
                       Expanded(
