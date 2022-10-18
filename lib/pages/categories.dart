@@ -54,26 +54,28 @@ class _CategoriesState extends State<Categories> {
             Expanded(
                 child: CupertinoFormSection.insetGrouped(children: [
               ...List.generate(
-                  5,
-                  (index) => GestureDetector(
-                          child: DecoratedBox(
-                        decoration: const BoxDecoration(),
-                        child: CupertinoFormRow(
-                            prefix: Row(children: [
-                              Container(
-                                  width: 12,
-                                  height: 12,
-                                  margin: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                                  decoration: BoxDecoration(
-                                    color: pickerColor,
-                                    shape: BoxShape.circle,
-                                  )),
-                              const Text("Category name"),
-                            ]),
-                            helper: null,
-                            padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-                            child: Container()),
-                      )))
+                5,
+                (index) => GestureDetector(
+                  child: DecoratedBox(
+                    decoration: const BoxDecoration(),
+                    child: CupertinoFormRow(
+                        prefix: Row(children: [
+                          Container(
+                              width: 12,
+                              height: 12,
+                              margin: const EdgeInsets.fromLTRB(0, 0, 8, 0),
+                              decoration: BoxDecoration(
+                                color: pickerColor,
+                                shape: BoxShape.circle,
+                              )),
+                          const Text("Category name"),
+                        ]),
+                        helper: null,
+                        padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+                        child: Container()),
+                  ),
+                ),
+              ),
             ])),
             SafeArea(
                 bottom: true,

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 import '../pages/categories.dart';
 import '../types/widgets.dart';
@@ -53,13 +52,14 @@ class Settings extends WidgetWithTitle {
                         prefix: Text(items[index].label,
                             style: TextStyle(
                                 color: items[index].isDestructive
-                                    ? Colors.red
-                                    : Colors.white)),
+                                    ? const Color.fromARGB(255, 255, 69, 58)
+                                    : const Color.fromARGB(
+                                        255, 255, 255, 255))),
                         helper: null,
                         padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
                         child: items[index].isDestructive
                             ? Container()
-                            : const Icon(Icons.keyboard_arrow_right_sharp),
+                            : const Icon(CupertinoIcons.chevron_right),
                       ),
                     )))
           ])),
