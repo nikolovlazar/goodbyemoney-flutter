@@ -78,7 +78,7 @@ class _ExpensesContent extends State<ExpensesContent> {
                 CupertinoPicker(
                   scrollController: FixedExtentScrollController(
                       initialItem: _selectedPeriodIndex),
-                  magnification: 1.22,
+                  magnification: 1,
                   squeeze: 1.2,
                   useMagnifier: false,
                   itemExtent: kItemExtent,

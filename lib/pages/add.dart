@@ -1,17 +1,18 @@
 // ignore_for_file: library_private_types_in_public_api
 import 'package:flutter/cupertino.dart';
 import 'package:goodbye_money/constants.dart';
+import 'package:goodbye_money/models/category.dart';
 import 'package:goodbye_money/types/recurrence.dart';
 import 'package:goodbye_money/types/widgets.dart';
 
 var recurrences = List.from(Recurrence.values);
-const categories = [
-  "Food",
-  "Transportation",
-  "Entertainment",
-  "Bills",
-  "Clothing",
-  "Other"
+List<Category> categories = [
+  Category(color: CupertinoColors.systemBlue, name: "Food"),
+  Category(color: CupertinoColors.systemYellow, name: "Transportation"),
+  Category(color: CupertinoColors.systemRed, name: "Entertainment"),
+  Category(color: CupertinoColors.systemPurple, name: "Bills"),
+  Category(color: CupertinoColors.systemGreen, name: "Clothing"),
+  Category(color: CupertinoColors.systemPink, name: "Other"),
 ];
 
 class Add extends WidgetWithTitle {
@@ -117,8 +118,9 @@ class _AddContentState extends State<AddContent> {
                       onPressed: () => _showDialog(
                         CupertinoPicker(
                           scrollController: FixedExtentScrollController(
-                              initialItem: _selectedRecurrenceIndex),
-                          magnification: 1.22,
+                            initialItem: _selectedRecurrenceIndex,
+                          ),
+                          magnification: 1,
                           squeeze: 1.2,
                           useMagnifier: false,
                           itemExtent: kItemExtent,
@@ -198,7 +200,7 @@ class _AddContentState extends State<AddContent> {
                         CupertinoPicker(
                           scrollController: FixedExtentScrollController(
                               initialItem: _selectedCategoryIndex),
-                          magnification: 1.22,
+                          magnification: 1,
                           squeeze: 1.2,
                           useMagnifier: false,
                           itemExtent: kItemExtent,
@@ -210,13 +212,34 @@ class _AddContentState extends State<AddContent> {
                           },
                           children: List<Widget>.generate(categories.length,
                               (int index) {
-                            return Center(
-                              child: Text(categories[index]),
+                            return Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 64),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                      width: 12,
+                                      height: 12,
+                                      margin:
+                                          const EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                      decoration: BoxDecoration(
+                                        color: categories[index].color,
+                                        shape: BoxShape.circle,
+                                      )),
+                                  Text(categories[index].name),
+                                ],
+                              ),
                             );
                           }),
                         ),
                       ),
-                      child: Text(categories[_selectedCategoryIndex]),
+                      child: Text(
+                        categories[_selectedCategoryIndex].name,
+                        style: TextStyle(
+                          color: categories[_selectedCategoryIndex].color,
+                        ),
+                      ),
                     ),
                   ),
                 ),
