@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:goodbye_money/types/widgets.dart';
 
@@ -79,146 +81,164 @@ class _AddContentState extends State<AddContent> {
           FocusManager.instance.primaryFocus?.unfocus();
         },
         child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 28, 28, 30),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: CupertinoFormSection.insetGrouped(children: [
-              DecoratedBox(
-                decoration: const BoxDecoration(),
-                child: CupertinoFormRow(
-                  prefix: const Text("Amount",
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
-                  helper: null,
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                  child: CupertinoTextField.borderless(
-                    placeholder: "Amount",
-                    controller: _amountController,
-                    keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true,
+          decoration: const BoxDecoration(),
+          child: Column(
+            children: [
+              CupertinoFormSection.insetGrouped(children: [
+                DecoratedBox(
+                  decoration: const BoxDecoration(),
+                  child: CupertinoFormRow(
+                    prefix: const Text("Amount",
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255))),
+                    helper: null,
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                    child: CupertinoTextField.borderless(
+                      placeholder: "Amount",
+                      controller: _amountController,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      textAlign: TextAlign.end,
+                      textInputAction: TextInputAction.continueAction,
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: Color.fromARGB(0, 0, 0, 0),
+                      ),
                     ),
-                    textAlign: TextAlign.end,
-                    textInputAction: TextInputAction.continueAction,
-                    style: const TextStyle(
+                  ),
+                ),
+                DecoratedBox(
+                  decoration: const BoxDecoration(),
+                  child: CupertinoFormRow(
+                    prefix: const Text("Recurrence",
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255))),
+                    helper: null,
+                    padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+                    child: CupertinoButton(
+                      onPressed: () => _showDialog(
+                        CupertinoPicker(
+                          magnification: 1.22,
+                          squeeze: 1.2,
+                          useMagnifier: false,
+                          itemExtent: _kItemExtent,
+                          // This is called when selected item is changed.
+                          onSelectedItemChanged: (int selectedItem) {
+                            setState(() {
+                              _selectedRecurrenceIndex = selectedItem;
+                            });
+                          },
+                          children: List<Widget>.generate(recurrences.length,
+                              (int index) {
+                            return Center(
+                              child: Text(recurrences[index]),
+                            );
+                          }),
+                        ),
+                      ),
+                      child: Text(recurrences[_selectedRecurrenceIndex]),
+                    ),
+                  ),
+                ),
+                DecoratedBox(
+                  decoration: const BoxDecoration(),
+                  child: CupertinoFormRow(
+                    prefix: const Text("Date",
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255))),
+                    helper: null,
+                    padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+                    child: CupertinoButton(
+                      onPressed: () => _showDialog(
+                        CupertinoDatePicker(
+                          initialDateTime: _selectedDate,
+                          mode: CupertinoDatePickerMode.dateAndTime,
+                          use24hFormat: true,
+                          // This is called when the user changes the time.
+                          onDateTimeChanged: (DateTime newTime) {
+                            setState(() => _selectedDate = newTime);
+                          },
+                        ),
+                      ),
+                      child: Text(
+                          '${_selectedDate.month}/${_selectedDate.day}/${_selectedDate.year} ${_selectedDate.hour}:${_selectedDate.minute}'),
+                    ),
+                  ),
+                ),
+                DecoratedBox(
+                  decoration: const BoxDecoration(),
+                  child: CupertinoFormRow(
+                    prefix: const Text("Note",
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255))),
+                    helper: null,
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                    child: CupertinoTextField.borderless(
+                      placeholder: "Note",
+                      controller: _noteController,
+                      textAlign: TextAlign.end,
+                      textInputAction: TextInputAction.continueAction,
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: Color.fromARGB(0, 0, 0, 0),
+                      ),
+                    ),
+                  ),
+                ),
+                DecoratedBox(
+                  decoration: const BoxDecoration(),
+                  child: CupertinoFormRow(
+                    prefix: const Text("Category",
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255))),
+                    helper: null,
+                    padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+                    child: CupertinoButton(
+                      onPressed: () => _showDialog(
+                        CupertinoPicker(
+                          magnification: 1.22,
+                          squeeze: 1.2,
+                          useMagnifier: false,
+                          itemExtent: _kItemExtent,
+                          // This is called when selected item is changed.
+                          onSelectedItemChanged: (int selectedItem) {
+                            setState(() {
+                              _selectedCategoryIndex = selectedItem;
+                            });
+                          },
+                          children: List<Widget>.generate(categories.length,
+                              (int index) {
+                            return Center(
+                              child: Text(categories[index]),
+                            );
+                          }),
+                        ),
+                      ),
+                      child: Text(categories[_selectedCategoryIndex]),
+                    ),
+                  ),
+                ),
+              ]),
+              Container(
+                margin: const EdgeInsets.only(top: 32),
+                child: CupertinoButton(
+                  onPressed: () {},
+                  color: CupertinoTheme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                  pressedOpacity: 0.7,
+                  child: const Text(
+                    "Submit expense",
+                    style: TextStyle(
                       color: Color.fromARGB(255, 255, 255, 255),
-                      backgroundColor: Color.fromARGB(0, 0, 0, 0),
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
-              ),
-              DecoratedBox(
-                decoration: const BoxDecoration(),
-                child: CupertinoFormRow(
-                  prefix: const Text("Recurrence",
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
-                  helper: null,
-                  padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
-                  child: CupertinoButton(
-                    onPressed: () => _showDialog(
-                      CupertinoPicker(
-                        magnification: 1.22,
-                        squeeze: 1.2,
-                        useMagnifier: false,
-                        itemExtent: _kItemExtent,
-                        // This is called when selected item is changed.
-                        onSelectedItemChanged: (int selectedItem) {
-                          setState(() {
-                            _selectedRecurrenceIndex = selectedItem;
-                          });
-                        },
-                        children: List<Widget>.generate(recurrences.length,
-                            (int index) {
-                          return Center(
-                            child: Text(recurrences[index]),
-                          );
-                        }),
-                      ),
-                    ),
-                    child: Text(recurrences[_selectedRecurrenceIndex]),
-                  ),
-                ),
-              ),
-              DecoratedBox(
-                decoration: const BoxDecoration(),
-                child: CupertinoFormRow(
-                  prefix: const Text("Date",
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
-                  helper: null,
-                  padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
-                  child: CupertinoButton(
-                    onPressed: () => _showDialog(
-                      CupertinoDatePicker(
-                        initialDateTime: _selectedDate,
-                        mode: CupertinoDatePickerMode.dateAndTime,
-                        use24hFormat: true,
-                        // This is called when the user changes the time.
-                        onDateTimeChanged: (DateTime newTime) {
-                          setState(() => _selectedDate = newTime);
-                        },
-                      ),
-                    ),
-                    child: Text(
-                        '${_selectedDate.month}/${_selectedDate.day}/${_selectedDate.year} ${_selectedDate.hour}:${_selectedDate.minute}'),
-                  ),
-                ),
-              ),
-              DecoratedBox(
-                decoration: const BoxDecoration(),
-                child: CupertinoFormRow(
-                  prefix: const Text("Note",
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
-                  helper: null,
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                  child: CupertinoTextField.borderless(
-                    placeholder: "Note",
-                    controller: _noteController,
-                    textAlign: TextAlign.end,
-                    textInputAction: TextInputAction.continueAction,
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      backgroundColor: Color.fromARGB(0, 0, 0, 0),
-                    ),
-                  ),
-                ),
-              ),
-              DecoratedBox(
-                decoration: const BoxDecoration(),
-                child: CupertinoFormRow(
-                  prefix: const Text("Category",
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
-                  helper: null,
-                  padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
-                  child: CupertinoButton(
-                    onPressed: () => _showDialog(
-                      CupertinoPicker(
-                        magnification: 1.22,
-                        squeeze: 1.2,
-                        useMagnifier: false,
-                        itemExtent: _kItemExtent,
-                        // This is called when selected item is changed.
-                        onSelectedItemChanged: (int selectedItem) {
-                          setState(() {
-                            _selectedCategoryIndex = selectedItem;
-                          });
-                        },
-                        children: List<Widget>.generate(categories.length,
-                            (int index) {
-                          return Center(
-                            child: Text(categories[index]),
-                          );
-                        }),
-                      ),
-                    ),
-                    child: Text(categories[_selectedCategoryIndex]),
-                  ),
-                ),
-              ),
-            ])),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
