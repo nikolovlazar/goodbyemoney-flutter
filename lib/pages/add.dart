@@ -1,13 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
-
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
+import 'package:goodbye_money/constants.dart';
+import 'package:goodbye_money/types/recurrence.dart';
 import 'package:goodbye_money/types/widgets.dart';
 
-const double _kItemExtent = 32.0;
-
-const recurrences = ["None", "Daily", "Weekly", "Monthly", "Yearly"];
+var recurrences = List.from(Recurrence.values);
 const categories = [
   "Food",
   "Transportation",
@@ -119,10 +116,12 @@ class _AddContentState extends State<AddContent> {
                     child: CupertinoButton(
                       onPressed: () => _showDialog(
                         CupertinoPicker(
+                          scrollController: FixedExtentScrollController(
+                              initialItem: _selectedRecurrenceIndex),
                           magnification: 1.22,
                           squeeze: 1.2,
                           useMagnifier: false,
-                          itemExtent: _kItemExtent,
+                          itemExtent: kItemExtent,
                           // This is called when selected item is changed.
                           onSelectedItemChanged: (int selectedItem) {
                             setState(() {
@@ -197,10 +196,12 @@ class _AddContentState extends State<AddContent> {
                     child: CupertinoButton(
                       onPressed: () => _showDialog(
                         CupertinoPicker(
+                          scrollController: FixedExtentScrollController(
+                              initialItem: _selectedCategoryIndex),
                           magnification: 1.22,
                           squeeze: 1.2,
                           useMagnifier: false,
-                          itemExtent: _kItemExtent,
+                          itemExtent: kItemExtent,
                           // This is called when selected item is changed.
                           onSelectedItemChanged: (int selectedItem) {
                             setState(() {
