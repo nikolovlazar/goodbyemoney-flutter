@@ -248,6 +248,8 @@ class _AddContentState extends State<AddContent> {
                 margin: const EdgeInsets.only(top: 32),
                 child: CupertinoButton(
                   onPressed: () {},
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
                   color: CupertinoTheme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(10),
                   pressedOpacity: 0.7,

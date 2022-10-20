@@ -32,7 +32,7 @@ class ExpensesList extends StatelessWidget {
 
     return CupertinoScrollbar(
       child: Container(
-        padding: const EdgeInsets.only(right: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
