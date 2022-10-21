@@ -20,49 +20,62 @@ class Settings extends WidgetWithTitle {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 147,
-      transformAlignment: Alignment.center,
-      child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 28, 28, 30),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: CupertinoFormSection.insetGrouped(children: [
-            ...List.generate(
-                items.length,
-                (index) => GestureDetector(
-                    onTap: () {
-                      switch (index) {
-                        case 0:
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => const Categories()));
-                          break;
-                        case 1:
-                          _showAlertDialog(context);
-                          break;
-                      }
-                    },
-                    child: DecoratedBox(
-                      decoration: const BoxDecoration(),
-                      child: CupertinoFormRow(
-                        prefix: Text(items[index].label,
-                            style: TextStyle(
-                                color: items[index].isDestructive
-                                    ? const Color.fromARGB(255, 255, 69, 58)
-                                    : const Color.fromARGB(
-                                        255, 255, 255, 255))),
-                        helper: null,
-                        padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-                        child: items[index].isDestructive
-                            ? Container()
-                            : const Icon(CupertinoIcons.chevron_right),
-                      ),
-                    )))
-          ])),
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
+        backgroundColor: Color.fromARGB(0, 0, 0, 0),
+        middle: Text("Settings"),
+      ),
+      child: SafeArea(
+        left: true,
+        top: true,
+        right: true,
+        bottom: true,
+        child: Container(
+          width: double.infinity,
+          height: 147,
+          transformAlignment: Alignment.center,
+          child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 28, 28, 30),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: CupertinoFormSection.insetGrouped(children: [
+                ...List.generate(
+                    items.length,
+                    (index) => GestureDetector(
+                        onTap: () {
+                          switch (index) {
+                            case 0:
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) =>
+                                          const Categories()));
+                              break;
+                            case 1:
+                              _showAlertDialog(context);
+                              break;
+                          }
+                        },
+                        child: DecoratedBox(
+                          decoration: const BoxDecoration(),
+                          child: CupertinoFormRow(
+                            prefix: Text(items[index].label,
+                                style: TextStyle(
+                                    color: items[index].isDestructive
+                                        ? const Color.fromARGB(255, 255, 69, 58)
+                                        : const Color.fromARGB(
+                                            255, 255, 255, 255))),
+                            helper: null,
+                            padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+                            child: items[index].isDestructive
+                                ? Container()
+                                : const Icon(CupertinoIcons.chevron_right),
+                          ),
+                        )))
+              ])),
+        ),
+      ),
     );
   }
 }
