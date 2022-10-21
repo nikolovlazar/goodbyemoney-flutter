@@ -57,19 +57,7 @@ class _TabsControllerState extends State<TabsController> {
         tabBuilder: (BuildContext context, int index) {
           return CupertinoTabView(
             builder: (BuildContext context) {
-              return CupertinoPageScaffold(
-                navigationBar: CupertinoNavigationBar(
-                  backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-                  middle: Text(_pages[index].title),
-                ),
-                child: SafeArea(
-                  left: true,
-                  top: true,
-                  right: true,
-                  bottom: true,
-                  child: _pages[index],
-                ),
-              );
+              return _pages[index];
             },
           );
         });

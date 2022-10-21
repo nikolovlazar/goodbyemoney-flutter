@@ -31,18 +31,15 @@ class ExpensesList extends StatelessWidget {
     var displayedExpenses = _computeExpenses(expenses);
 
     return CupertinoScrollbar(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: displayedExpenses.length,
-          itemBuilder: (context, index) {
-            final DateTime date = displayedExpenses.keys.elementAt(index);
-            final List<Expense> expenses = displayedExpenses[date]!;
-            return DayExpenses(date: date, expenses: expenses);
-          },
-        ),
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: displayedExpenses.length,
+        itemBuilder: (context, index) {
+          final DateTime date = displayedExpenses.keys.elementAt(index);
+          final List<Expense> expenses = displayedExpenses[date]!;
+          return DayExpenses(date: date, expenses: expenses);
+        },
       ),
     );
   }

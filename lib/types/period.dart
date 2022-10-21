@@ -17,3 +17,5 @@ String getPeriodName(Period period) {
       return "This year";
   }
 }
+
+List<Period> periods = [Period.day, Period.week, Period.month, Period.year];

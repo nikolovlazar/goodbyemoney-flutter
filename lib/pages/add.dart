@@ -4,6 +4,7 @@ import 'package:goodbye_money/constants.dart';
 import 'package:goodbye_money/models/category.dart';
 import 'package:goodbye_money/types/recurrence.dart';
 import 'package:goodbye_money/types/widgets.dart';
+import 'package:goodbye_money/utils/picker_utils.dart';
 
 var recurrences = List.from(Recurrence.values);
 List<Category> categories = [
@@ -45,27 +46,6 @@ class _AddContentState extends State<AddContent> {
 
     _amountController = TextEditingController();
     _noteController = TextEditingController();
-  }
-
-  void _showDialog(Widget child) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => Container(
-        height: 216,
-        padding: const EdgeInsets.only(top: 6.0),
-        // The Bottom margin is provided to align the popup above the system navigation bar.
-        margin: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        // Provide a background color for the popup.
-        color: CupertinoColors.systemBackground.resolveFrom(context),
-        // Use a SafeArea widget to avoid system overlaps.
-        child: SafeArea(
-          top: false,
-          child: child,
-        ),
-      ),
-    );
   }
 
   @override
@@ -115,7 +95,8 @@ class _AddContentState extends State<AddContent> {
                     helper: null,
                     padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
                     child: CupertinoButton(
-                      onPressed: () => _showDialog(
+                      onPressed: () => showPicker(
+                        context,
                         CupertinoPicker(
                           scrollController: FixedExtentScrollController(
                             initialItem: _selectedRecurrenceIndex,
@@ -151,7 +132,8 @@ class _AddContentState extends State<AddContent> {
                     helper: null,
                     padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
                     child: CupertinoButton(
-                      onPressed: () => _showDialog(
+                      onPressed: () => showPicker(
+                        context,
                         CupertinoDatePicker(
                           initialDateTime: _selectedDate,
                           mode: CupertinoDatePickerMode.dateAndTime,
@@ -196,7 +178,8 @@ class _AddContentState extends State<AddContent> {
                     helper: null,
                     padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
                     child: CupertinoButton(
-                      onPressed: () => _showDialog(
+                      onPressed: () => showPicker(
+                        context,
                         CupertinoPicker(
                           scrollController: FixedExtentScrollController(
                               initialItem: _selectedCategoryIndex),

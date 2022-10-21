@@ -36,6 +36,11 @@ extension DateExtensions on DateTime {
     return format.format(this);
   }
 
+  get shortDate {
+    DateFormat format = DateFormat("d MMM");
+    return format.format(this);
+  }
+
   get simpleDate {
     return DateTime(year, month, day);
   }

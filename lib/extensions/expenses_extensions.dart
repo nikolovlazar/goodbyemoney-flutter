@@ -3,7 +3,7 @@ import 'package:goodbye_money/models/expense.dart';
 import 'package:goodbye_money/types/period.dart';
 
 extension ExpensesExtension on List<Expense> {
-  List<Expense> filterByPeriod(Period period, int periodIndex) {
+  List filterByPeriod(Period period, int periodIndex) {
     List<Expense> expenses = [];
     DateTime startDate;
     DateTime endDate;
@@ -14,10 +14,10 @@ extension ExpensesExtension on List<Expense> {
         startDate = endDate = now.subtract(Duration(days: periodIndex));
         break;
       case Period.week:
-        int diffSinceMonday = now.weekday;
+        int diffSinceMonday = now.weekday - 1;
         startDate =
             now.subtract(Duration(days: diffSinceMonday + 7 * periodIndex));
-        endDate = now.add(const Duration(days: 7));
+        endDate = startDate.add(const Duration(days: 6));
         break;
       case Period.month:
         startDate = DateTime(now.year, now.month, 1);
@@ -39,6 +39,14 @@ extension ExpensesExtension on List<Expense> {
       }
     });
 
-    return expenses;
+    return [expenses, startDate, endDate];
+  }
+
+  double sum() {
+    double sum = 0;
+    forEach((element) {
+      sum += element.amount;
+    });
+    return sum;
   }
 }
