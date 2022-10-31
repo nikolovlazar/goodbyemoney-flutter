@@ -1,6 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/cupertino.dart';
+import 'package:goodbye_money/components/charts/monthly_chart.dart';
+import 'package:goodbye_money/components/charts/weekly_chart.dart';
+import 'package:goodbye_money/components/charts/yearly_chart.dart';
 import 'package:goodbye_money/components/expenses_list.dart';
 
 import 'package:goodbye_money/constants.dart';
@@ -32,10 +35,7 @@ class ReportsContent extends StatefulWidget {
 
 class _ReportsContent extends State<ReportsContent> {
   final PageController _controller = PageController(initialPage: 0);
-  int _currPage = 0;
-  int get _currentPage => _currPage;
   set _currentPage(int value) {
-    _currPage = value;
     setStateValues(value);
   }
 
@@ -197,12 +197,33 @@ class _ReportsContent extends State<ReportsContent> {
                       ),
                     ],
                   ),
-                  const Text("CHART GOES HERE"),
-                  Expanded(
-                    child: ExpensesList(
-                      expenses: _expenses,
-                    ),
-                  ),
+                  (() {
+                    switch (_selectedPeriodIndex) {
+                      case 1:
+                        return WeeklyChart(expenses: _expenses);
+                      case 2:
+                        return MonthlyChart(
+                          expenses: _expenses,
+                          startDate: _startDate,
+                          endDate: _endDate,
+                        );
+                      case 3:
+                        return YearlyChart(expenses: _expenses);
+                      default:
+                        return const Text("");
+                    }
+                  }()),
+                  (() {
+                    if (_expenses.isEmpty) {
+                      return const Text("No data for selected period!");
+                    } else {
+                      return Expanded(
+                        child: ExpensesList(
+                          expenses: _expenses,
+                        ),
+                      );
+                    }
+                  }()),
                 ],
               ),
             );

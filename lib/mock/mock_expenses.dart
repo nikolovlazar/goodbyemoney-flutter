@@ -6,6 +6,8 @@ import 'package:goodbye_money/types/recurrence.dart';
 
 var now = DateTime.now();
 var yesterday = now.subtract(const Duration(days: 1));
+var twoDaysAgo = now.subtract(const Duration(days: 2));
+var threeDaysAgo = now.subtract(const Duration(days: 3));
 var eightDaysAgo = now.subtract(const Duration(days: 8));
 var lastYear = now.subtract(const Duration(days: 365));
 
@@ -50,9 +52,17 @@ var mockExpenses = [
   Expense(
     amount: 119,
     category: Category(name: "Electronics", color: CupertinoColors.systemGreen),
-    date: DateTime(
-        eightDaysAgo.year, eightDaysAgo.month, eightDaysAgo.day, 18, 52, 48),
+    date:
+        DateTime(twoDaysAgo.year, twoDaysAgo.month, twoDaysAgo.day, 18, 52, 48),
     note: "Magic mouse",
+  ),
+  Expense(
+    amount: 315,
+    category: Category(name: "Bills", color: CupertinoColors.systemRed),
+    date: DateTime(
+        threeDaysAgo.year, threeDaysAgo.month, threeDaysAgo.day, 12, 00, 00),
+    note: "Water",
+    recurrence: Recurrence.monthly,
   ),
   Expense(
     amount: 30,

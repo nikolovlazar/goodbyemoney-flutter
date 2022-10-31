@@ -20,8 +20,8 @@ extension ExpensesExtension on List<Expense> {
         endDate = startDate.add(const Duration(days: 6));
         break;
       case Period.month:
-        startDate = DateTime(now.year, now.month, 1);
-        endDate = DateTime(now.year, now.month + 1, 0);
+        startDate = DateTime(now.year, now.month - periodIndex, 1);
+        endDate = DateTime(now.year, now.month - periodIndex + 1, 0);
         break;
       case Period.year:
         startDate = DateTime(now.year - 1, 1, 1);
@@ -48,5 +48,46 @@ extension ExpensesExtension on List<Expense> {
       sum += element.amount;
     });
     return sum;
+  }
+
+  groupWeekly() {
+    final Map<String, List<Expense>> grouped = {
+      "Monday": [],
+      "Tuesday": [],
+      "Wednesday": [],
+      "Thursday": [],
+      "Friday": [],
+      "Saturday": [],
+      "Sunday": [],
+    };
+
+    forEach((element) {
+      grouped[element.dayInWeek]!.add(element);
+    });
+
+    return grouped;
+  }
+
+  groupMonthly(DateTime startDate) {
+    final numOfDays = DateTime(startDate.year, startDate.month + 1, 0).day;
+    final Map<int, List<Expense>> grouped =
+        List.generate(numOfDays, (index) => <Expense>[]).asMap();
+
+    forEach((element) {
+      grouped[element.dayInMonth - 1]!.add(element);
+    });
+
+    return grouped;
+  }
+
+  groupYearly() {
+    final Map<int, List<Expense>> grouped =
+        List.generate(12, (index) => <Expense>[]).asMap();
+
+    forEach((element) {
+      grouped[element.date.month - 1]!.add(element);
+    });
+
+    return grouped;
   }
 }

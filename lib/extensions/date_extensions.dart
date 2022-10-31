@@ -45,6 +45,11 @@ extension DateExtensions on DateTime {
     return DateTime(year, month, day);
   }
 
+  get nameOfDay {
+    DateFormat format = DateFormat("EEEE");
+    return format.format(this);
+  }
+
   get time {
     DateFormat format = DateFormat("HH:mm");
     return format.format(this);

@@ -37,8 +37,15 @@ class ExpensesList extends StatelessWidget {
         itemCount: displayedExpenses.length,
         itemBuilder: (context, index) {
           final DateTime date = displayedExpenses.keys.elementAt(index);
-          final List<Expense> expenses = displayedExpenses[date]!;
-          return DayExpenses(date: date, expenses: expenses);
+          final List<Expense> dayExpenses = displayedExpenses[date]!;
+
+          if (dayExpenses.isEmpty) {
+            return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: const Text('No expenses for period'));
+          }
+
+          return DayExpenses(date: date, expenses: dayExpenses);
         },
       ),
     );

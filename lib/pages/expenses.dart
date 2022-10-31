@@ -75,12 +75,12 @@ class _ExpensesContent extends State<ExpensesContent> {
                       children:
                           List<Widget>.generate(periods.length, (int index) {
                         return Center(
-                          child: Text(getPeriodName(periods[index])),
+                          child: Text(getPeriodDisplayName(periods[index])),
                         );
                       }),
                     ),
                   ),
-                  child: Text(getPeriodName(_selectedPeriod)),
+                  child: Text(getPeriodDisplayName(_selectedPeriod)),
                 ),
               ],
             ),
