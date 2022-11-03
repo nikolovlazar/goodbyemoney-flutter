@@ -1,11 +1,17 @@
-import 'dart:ui';
+// import 'package:realm/realm.dart';
+// import 'dart:ui';
 
-class Category {
-  final String name;
-  final Color color;
+// part 'category.g.dart';
 
-  Category({
-    required this.name,
-    required this.color,
-  });
-}
+// @RealmModel()
+// class _Category extends RealmObject {
+//   @PrimaryKey()
+//   late final ObjectId id;
+//   late final String name;
+//   // late final Color color;
+
+//   // Category({
+//   //   required this.name,
+//   //   required this.color,
+//   // });
+// }
