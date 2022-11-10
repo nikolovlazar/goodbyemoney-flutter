@@ -1,17 +1,19 @@
-// import 'package:realm/realm.dart';
-// import 'dart:ui';
+import 'package:realm/realm.dart';
+import 'dart:ui';
 
-// part 'category.g.dart';
+part 'category.g.dart';
 
-// @RealmModel()
-// class _Category extends RealmObject {
-//   @PrimaryKey()
-//   late final ObjectId id;
-//   late final String name;
-//   // late final Color color;
+@RealmModel()
+class $Category {
+  @PrimaryKey()
+  late final String name;
+  late final int colorValue;
 
-//   // Category({
-//   //   required this.name,
-//   //   required this.color,
-//   // });
-// }
+  Color get color {
+    return Color(colorValue);
+  }
+
+  set color(Color value) {
+    colorValue = value.value;
+  }
+}

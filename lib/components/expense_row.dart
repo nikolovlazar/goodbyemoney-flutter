@@ -17,7 +17,7 @@ class ExpenseRow extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(expense.note ?? expense.category.name,
+            Text(expense.note ?? expense.category!.name,
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 17,
@@ -34,7 +34,7 @@ class ExpenseRow extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CategoryBadge(category: expense.category),
+              CategoryBadge(category: expense.category!),
               Text(expense.date.time,
                   style: const TextStyle(
                     color: CupertinoColors.inactiveGray,

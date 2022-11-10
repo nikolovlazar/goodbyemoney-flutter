@@ -8,12 +8,12 @@ import 'package:goodbye_money/utils/picker_utils.dart';
 
 var recurrences = List.from(Recurrence.values);
 List<Category> categories = [
-  Category(color: CupertinoColors.systemBlue, name: "Food"),
-  Category(color: CupertinoColors.systemYellow, name: "Transportation"),
-  Category(color: CupertinoColors.systemRed, name: "Entertainment"),
-  Category(color: CupertinoColors.systemPurple, name: "Bills"),
-  Category(color: CupertinoColors.systemGreen, name: "Clothing"),
-  Category(color: CupertinoColors.systemPink, name: "Other"),
+  Category("Food", CupertinoColors.systemBlue.color.value),
+  Category("Transportation", CupertinoColors.systemYellow.color.value),
+  Category("Entertainment", CupertinoColors.systemRed.color.value),
+  Category("Bills", CupertinoColors.systemPurple.color.value),
+  Category("Clothing", CupertinoColors.systemGreen.color.value),
+  Category("Other", CupertinoColors.systemPink.color.value),
 ];
 
 class Add extends WidgetWithTitle {

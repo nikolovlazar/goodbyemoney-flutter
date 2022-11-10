@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:realm/realm.dart';
 
 import 'package:goodbye_money/models/category.dart';
 import 'package:goodbye_money/models/expense.dart';
@@ -13,68 +14,77 @@ var lastYear = now.subtract(const Duration(days: 365));
 
 var mockExpenses = [
   Expense(
-    amount: 659.99,
-    category: Category(name: "Takeout", color: CupertinoColors.systemYellow),
-    date: DateTime(now.year, now.month, now.day, 16, 24, 13),
+    ObjectId(),
+    659.99,
+    DateTime(now.year, now.month, now.day, 16, 24, 13),
     note: "Pizza",
+    category: Category("Takeout", CupertinoColors.systemYellow.color.value),
   ),
   Expense(
-    amount: 35,
-    category: Category(name: "Electronics", color: CupertinoColors.systemGreen),
-    date: DateTime(now.year, now.month, now.day, 13, 37, 24),
+    ObjectId(),
+    35,
+    DateTime(now.year, now.month, now.day, 13, 37, 24),
+    category: Category("Electronics", CupertinoColors.systemGreen.color.value),
     note: "Mouse pad",
   ),
   Expense(
-    amount: 1200,
-    category: Category(name: "Groceries", color: CupertinoColors.systemBlue),
-    date: DateTime(now.year, now.month, now.day, 15, 22, 38),
+    ObjectId(),
+    1200,
+    DateTime(now.year, now.month, now.day, 15, 22, 38),
+    category: Category("Groceries", CupertinoColors.systemBlue.color.value),
   ),
   Expense(
-    amount: 1000,
-    category: Category(name: "Bills", color: CupertinoColors.systemRed),
-    date: DateTime(now.year, now.month, now.day, 12, 00, 00),
+    ObjectId(),
+    1000,
+    DateTime(now.year, now.month, now.day, 12, 00, 00),
+    category: Category("Bills", CupertinoColors.systemRed.color.value),
     note: "Internet",
     recurrence: Recurrence.monthly,
   ),
   Expense(
-    amount: 150,
-    category: Category(name: "Groceries", color: CupertinoColors.systemBlue),
-    date: DateTime(yesterday.year, yesterday.month, yesterday.day, 11, 32, 07),
+    ObjectId(),
+    150,
+    DateTime(yesterday.year, yesterday.month, yesterday.day, 11, 32, 07),
+    category: Category("Groceries", CupertinoColors.systemBlue.color.value),
     note: "Milk + Eggs",
   ),
   Expense(
-    amount: 315,
-    category: Category(name: "Bills", color: CupertinoColors.systemRed),
-    date: DateTime(yesterday.year, yesterday.month, yesterday.day, 12, 00, 00),
+    ObjectId(),
+    315,
+    DateTime(yesterday.year, yesterday.month, yesterday.day, 12, 00, 00),
+    category: Category("Bills", CupertinoColors.systemRed.color.value),
     note: "Water",
     recurrence: Recurrence.monthly,
   ),
   Expense(
-    amount: 119,
-    category: Category(name: "Electronics", color: CupertinoColors.systemGreen),
-    date:
-        DateTime(twoDaysAgo.year, twoDaysAgo.month, twoDaysAgo.day, 18, 52, 48),
+    ObjectId(),
+    119,
+    DateTime(twoDaysAgo.year, twoDaysAgo.month, twoDaysAgo.day, 18, 52, 48),
+    category: Category("Electronics", CupertinoColors.systemGreen.color.value),
     note: "Magic mouse",
   ),
   Expense(
-    amount: 315,
-    category: Category(name: "Bills", color: CupertinoColors.systemRed),
-    date: DateTime(
+    ObjectId(),
+    315,
+    DateTime(
         threeDaysAgo.year, threeDaysAgo.month, threeDaysAgo.day, 12, 00, 00),
+    category: Category("Bills", CupertinoColors.systemRed.color.value),
     note: "Water",
     recurrence: Recurrence.monthly,
   ),
   Expense(
-    amount: 30,
-    category: Category(name: "Takeout", color: CupertinoColors.systemYellow),
-    date: DateTime(
+    ObjectId(),
+    30,
+    DateTime(
         eightDaysAgo.year, eightDaysAgo.month, eightDaysAgo.day, 21, 13, 22),
+    category: Category("Takeout", CupertinoColors.systemYellow.color.value),
     note: "Burgers",
   ),
   Expense(
-    amount: 30,
-    category: Category(name: "Takeout", color: CupertinoColors.systemYellow),
-    date: DateTime(lastYear.year, lastYear.month, lastYear.day, 21, 13, 22),
+    ObjectId(),
+    30,
+    DateTime(lastYear.year, lastYear.month, lastYear.day, 21, 13, 22),
+    category: Category("Takeout", CupertinoColors.systemYellow.color.value),
     note: "Burgers",
   )
 ];
