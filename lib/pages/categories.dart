@@ -1,6 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 import 'package:flutter/cupertino.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:goodbye_money/models/category.dart';
+import 'package:goodbye_money/realm.dart';
 
 class Categories extends StatefulWidget {
   const Categories({super.key});
@@ -11,6 +13,7 @@ class Categories extends StatefulWidget {
 class _CategoriesState extends State<Categories> {
   Color pickerColor = const Color(0xff443a49);
   Color currentColor = const Color(0xff443a49);
+  List<Category> categories = [];
 
   late TextEditingController _textController;
 
@@ -18,6 +21,7 @@ class _CategoriesState extends State<Categories> {
   void initState() {
     super.initState();
     _textController = TextEditingController(text: '');
+    categories = realm.all<Category>().toList();
   }
 
   @override
@@ -31,6 +35,9 @@ class _CategoriesState extends State<Categories> {
   }
 
   void createCategory() {
+    var newCategory = realm.write<Category>(
+        () => realm.add(Category(_textController.text, pickerColor.value)));
+    setState(() => categories.add(newCategory));
     _textController.clear();
   }
 
@@ -51,32 +58,44 @@ class _CategoriesState extends State<Categories> {
           padding: const EdgeInsets.fromLTRB(0, 16, 0, 16),
           color: const Color.fromARGB(255, 0, 0, 0),
           child: Column(children: [
-            Expanded(
-                child: CupertinoFormSection.insetGrouped(children: [
-              ...List.generate(
-                5,
-                (index) => GestureDetector(
-                  child: DecoratedBox(
-                    decoration: const BoxDecoration(),
-                    child: CupertinoFormRow(
-                        prefix: Row(children: [
-                          Container(
-                              width: 12,
-                              height: 12,
-                              margin: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                              decoration: BoxDecoration(
-                                color: pickerColor,
-                                shape: BoxShape.circle,
-                              )),
-                          const Text("Category name"),
-                        ]),
-                        helper: null,
-                        padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-                        child: Container()),
+            categories.isNotEmpty
+                ? Expanded(
+                    child: CupertinoFormSection.insetGrouped(children: [
+                      ...List.generate(
+                        categories.length,
+                        (index) => GestureDetector(
+                          child: DecoratedBox(
+                            decoration: const BoxDecoration(),
+                            child: CupertinoFormRow(
+                                prefix: Row(children: [
+                                  Container(
+                                      width: 12,
+                                      height: 12,
+                                      margin:
+                                          const EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                      decoration: BoxDecoration(
+                                        color: categories[index].color,
+                                        shape: BoxShape.circle,
+                                      )),
+                                  Text(categories[index].name),
+                                ]),
+                                helper: null,
+                                padding:
+                                    const EdgeInsets.fromLTRB(16, 14, 16, 14),
+                                child: Container()),
+                          ),
+                        ),
+                      ),
+                    ]),
+                  )
+                : Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                      child: const Text("No categories yet",
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 255, 255, 255))),
+                    ),
                   ),
-                ),
-              ),
-            ])),
             SafeArea(
                 bottom: true,
                 child: Container(

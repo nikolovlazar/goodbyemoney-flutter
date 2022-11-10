@@ -2,19 +2,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:goodbye_money/constants.dart';
 import 'package:goodbye_money/models/category.dart';
+import 'package:goodbye_money/realm.dart';
 import 'package:goodbye_money/types/recurrence.dart';
 import 'package:goodbye_money/types/widgets.dart';
 import 'package:goodbye_money/utils/picker_utils.dart';
 
 var recurrences = List.from(Recurrence.values);
-List<Category> categories = [
-  Category("Food", CupertinoColors.systemBlue.color.value),
-  Category("Transportation", CupertinoColors.systemYellow.color.value),
-  Category("Entertainment", CupertinoColors.systemRed.color.value),
-  Category("Bills", CupertinoColors.systemPurple.color.value),
-  Category("Clothing", CupertinoColors.systemGreen.color.value),
-  Category("Other", CupertinoColors.systemPink.color.value),
-];
 
 class Add extends WidgetWithTitle {
   const Add({super.key}) : super(title: "Add");
@@ -36,6 +29,7 @@ class _AddContentState extends State<AddContent> {
   late TextEditingController _amountController;
   late TextEditingController _noteController;
 
+  List<Category> categories = [];
   int _selectedRecurrenceIndex = 0;
   int _selectedCategoryIndex = 0;
   DateTime _selectedDate = DateTime.now();
@@ -46,6 +40,7 @@ class _AddContentState extends State<AddContent> {
 
     _amountController = TextEditingController();
     _noteController = TextEditingController();
+    categories = realm.all<Category>().toList();
   }
 
   @override
