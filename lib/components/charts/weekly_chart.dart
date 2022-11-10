@@ -6,11 +6,9 @@ import 'package:goodbye_money/models/expense.dart';
 import 'package:goodbye_money/utils/chart_utils.dart';
 
 class WeeklyChart extends StatelessWidget {
-  final List<Expense> expenses;
+  final Map<String, List<Expense>> expenses;
 
   const WeeklyChart({super.key, required this.expenses});
-
-  Map<String, List<Expense>> get groupedExpenses => expenses.groupWeekly();
 
   Widget getTitles(double value, TitleMeta meta) {
     const style = TextStyle(
@@ -82,13 +80,13 @@ class WeeklyChart extends StatelessWidget {
       child: BarChart(
         BarChartData(
           barGroups: [
-            makeGroupData(0, groupedExpenses["Monday"]?.sum() ?? 0.0, 39),
-            makeGroupData(1, groupedExpenses["Tuesday"]?.sum() ?? 0.0, 39),
-            makeGroupData(2, groupedExpenses["Wednesday"]?.sum() ?? 0.0, 39),
-            makeGroupData(3, groupedExpenses["Thursday"]?.sum() ?? 0.0, 39),
-            makeGroupData(4, groupedExpenses["Friday"]?.sum() ?? 0.0, 39),
-            makeGroupData(5, groupedExpenses["Saturday"]?.sum() ?? 0.0, 39),
-            makeGroupData(6, groupedExpenses["Sunday"]?.sum() ?? 0.0, 39),
+            makeGroupData(0, expenses["Monday"]?.sum() ?? 0.0, 39),
+            makeGroupData(1, expenses["Tuesday"]?.sum() ?? 0.0, 39),
+            makeGroupData(2, expenses["Wednesday"]?.sum() ?? 0.0, 39),
+            makeGroupData(3, expenses["Thursday"]?.sum() ?? 0.0, 39),
+            makeGroupData(4, expenses["Friday"]?.sum() ?? 0.0, 39),
+            makeGroupData(5, expenses["Saturday"]?.sum() ?? 0.0, 39),
+            makeGroupData(6, expenses["Sunday"]?.sum() ?? 0.0, 39),
           ],
           titlesData: titlesData,
           gridData: FlGridData(

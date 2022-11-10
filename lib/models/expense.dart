@@ -16,14 +16,6 @@ class $Expense {
   late final String? note;
   late final String? recurrence = Recurrence.none;
 
-  // Expense({
-  //   required this.amount,
-  //   required this.category,
-  //   required this.date,
-  //   this.note,
-  //   this.recurrence = Recurrence.none,
-  // });
-
   get dayInWeek {
     DateFormat format = DateFormat("EEEE");
     return format.format(date);

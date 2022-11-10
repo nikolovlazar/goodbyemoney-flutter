@@ -1,8 +1,11 @@
 // ignore_for_file: library_private_types_in_public_api
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:goodbye_money/models/category.dart';
 import 'package:goodbye_money/realm.dart';
+import 'package:goodbye_money/utils/destructive_prompt.dart';
 
 class Categories extends StatefulWidget {
   const Categories({super.key});
@@ -66,23 +69,59 @@ class _CategoriesState extends State<Categories> {
                         (index) => GestureDetector(
                           child: DecoratedBox(
                             decoration: const BoxDecoration(),
-                            child: CupertinoFormRow(
-                                prefix: Row(children: [
-                                  Container(
-                                      width: 12,
-                                      height: 12,
-                                      margin:
-                                          const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                                      decoration: BoxDecoration(
-                                        color: categories[index].color,
-                                        shape: BoxShape.circle,
-                                      )),
-                                  Text(categories[index].name),
-                                ]),
-                                helper: null,
-                                padding:
-                                    const EdgeInsets.fromLTRB(16, 14, 16, 14),
-                                child: Container()),
+                            child: Dismissible(
+                              key: Key(categories[index].name),
+                              confirmDismiss: (_) {
+                                var confirmer = Completer<bool>();
+                                showAlertDialog(
+                                  context,
+                                  () {
+                                    confirmer.complete(true);
+                                  },
+                                  "Are you sure?",
+                                  "This action cannot be undone.",
+                                  "Delete ${categories[index].name} category",
+                                  cancellationCallback: () {
+                                    confirmer.complete(false);
+                                  },
+                                );
+
+                                return confirmer.future;
+                              },
+                              onDismissed: (_) {
+                                setState(() {
+                                  realm.write(
+                                      () => realm.delete(categories[index]));
+                                  categories.removeAt(index);
+                                });
+                              },
+                              background: Container(
+                                color: CupertinoColors.destructiveRed,
+                                alignment: Alignment.centerRight,
+                                padding: const EdgeInsets.only(right: 16),
+                                child: const Icon(
+                                  CupertinoIcons.delete,
+                                  color: CupertinoColors.white,
+                                ),
+                              ),
+                              child: CupertinoFormRow(
+                                  prefix: Row(children: [
+                                    Container(
+                                        width: 12,
+                                        height: 12,
+                                        margin: const EdgeInsets.fromLTRB(
+                                            0, 0, 8, 0),
+                                        decoration: BoxDecoration(
+                                          color: categories[index].color,
+                                          shape: BoxShape.circle,
+                                        )),
+                                    Text(categories[index].name),
+                                  ]),
+                                  helper: null,
+                                  padding:
+                                      const EdgeInsets.fromLTRB(16, 14, 16, 14),
+                                  child: Container()),
+                            ),
                           ),
                         ),
                       ),

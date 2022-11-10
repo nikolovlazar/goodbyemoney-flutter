@@ -1,4 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:collection/collection.dart';
 
@@ -6,11 +8,12 @@ import 'package:goodbye_money/components/expenses_list.dart';
 import 'package:goodbye_money/extensions/number_extensions.dart';
 import 'package:goodbye_money/extensions/expenses_extensions.dart';
 import 'package:goodbye_money/constants.dart';
-import 'package:goodbye_money/mock/mock_expenses.dart';
 import 'package:goodbye_money/models/expense.dart';
+import 'package:goodbye_money/realm.dart';
 import 'package:goodbye_money/types/period.dart';
 import 'package:goodbye_money/types/widgets.dart';
 import 'package:goodbye_money/utils/picker_utils.dart';
+import 'package:realm/realm.dart';
 
 class Expenses extends WidgetWithTitle {
   const Expenses({super.key}) : super(title: "Expenses");
@@ -32,13 +35,33 @@ class _ExpensesContent extends State<ExpensesContent> {
   int _selectedPeriodIndex = 1;
   Period get _selectedPeriod => periods[_selectedPeriodIndex];
 
-  List<Expense> get _expenses =>
-      mockExpenses.filterByPeriod(_selectedPeriod, 0)[0];
+  var realmExpenses = realm.all<Expense>();
+  StreamSubscription<RealmResultsChanges<Expense>>? _expensesSub;
+  List<Expense> _expenses = [];
 
   double get _total => _expenses.map((expense) => expense.amount).sum;
 
   @override
+  void initState() {
+    super.initState();
+    _expenses = realmExpenses.toList().filterByPeriod(_selectedPeriod, 0)[0];
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _expensesSub?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _expensesSub ??= realmExpenses.changes.listen((changes) {
+      setState(() {
+        _expenses =
+            changes.results.toList().filterByPeriod(_selectedPeriod, 0)[0];
+      });
+    });
+
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
         backgroundColor: Color.fromARGB(0, 0, 0, 0),
@@ -70,6 +93,8 @@ class _ExpensesContent extends State<ExpensesContent> {
                       onSelectedItemChanged: (int selectedItem) {
                         setState(() {
                           _selectedPeriodIndex = selectedItem;
+                          _expenses = realmExpenses.toList().filterByPeriod(
+                              periods[_selectedPeriodIndex], 0)[0];
                         });
                       },
                       children:

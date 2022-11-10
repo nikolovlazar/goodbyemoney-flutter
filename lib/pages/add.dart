@@ -1,11 +1,15 @@
 // ignore_for_file: library_private_types_in_public_api
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:goodbye_money/constants.dart';
 import 'package:goodbye_money/models/category.dart';
+import 'package:goodbye_money/models/expense.dart';
 import 'package:goodbye_money/realm.dart';
 import 'package:goodbye_money/types/recurrence.dart';
 import 'package:goodbye_money/types/widgets.dart';
 import 'package:goodbye_money/utils/picker_utils.dart';
+import 'package:realm/realm.dart';
 
 var recurrences = List.from(Recurrence.values);
 
@@ -28,13 +32,14 @@ class AddContent extends StatefulWidget {
 class _AddContentState extends State<AddContent> {
   late TextEditingController _amountController;
   late TextEditingController _noteController;
+  var realmCategories = realm.all<Category>();
+  StreamSubscription<RealmResultsChanges<Category>>? _categoriesSub;
 
   List<Category> categories = [];
   int _selectedRecurrenceIndex = 0;
   int _selectedCategoryIndex = 0;
   DateTime _selectedDate = DateTime.now();
-  bool get canSubmit =>
-      categories.isNotEmpty && _amountController.text.isNotEmpty;
+  bool canSubmit = false;
 
   @override
   void initState() {
@@ -42,11 +47,43 @@ class _AddContentState extends State<AddContent> {
 
     _amountController = TextEditingController();
     _noteController = TextEditingController();
-    categories = realm.all<Category>().toList();
+    categories = realmCategories.toList();
+    canSubmit = categories.isNotEmpty && _amountController.text.isNotEmpty;
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _categoriesSub?.cancel();
+    super.dispose();
+  }
+
+  void submitExpense() {
+    realm.write(() => realm.add<Expense>(Expense(
+          ObjectId(),
+          double.parse(_amountController.value.text),
+          _selectedDate,
+          category: categories[_selectedCategoryIndex],
+          note: _noteController.value.text.isNotEmpty
+              ? _noteController.value.text
+              : categories[_selectedCategoryIndex].name,
+          recurrence: recurrences[_selectedRecurrenceIndex],
+        )));
+
+    setState(() {
+      _amountController.clear();
+      _selectedRecurrenceIndex = 0;
+      _selectedDate = DateTime.now();
+      _noteController.clear();
+      _selectedCategoryIndex = 0;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    _categoriesSub ??= realmCategories.changes.listen((event) {
+      categories = event.results.toList();
+    });
+
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
         backgroundColor: Color.fromARGB(0, 0, 0, 0),
@@ -81,6 +118,10 @@ class _AddContentState extends State<AddContent> {
                         child: CupertinoTextField.borderless(
                           placeholder: "Amount",
                           controller: _amountController,
+                          onChanged: (value) {
+                            setState(() => canSubmit =
+                                categories.isNotEmpty && value.isNotEmpty);
+                          },
                           keyboardType: const TextInputType.numberWithOptions(
                             decimal: true,
                           ),
@@ -241,7 +282,7 @@ class _AddContentState extends State<AddContent> {
                   Container(
                     margin: const EdgeInsets.only(top: 32),
                     child: CupertinoButton(
-                      onPressed: canSubmit ? () {} : null,
+                      onPressed: canSubmit ? submitExpense : null,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 13),
                       color: CupertinoTheme.of(context).primaryColor,

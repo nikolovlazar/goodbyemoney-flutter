@@ -1,4 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:goodbye_money/models/category.dart';
+import 'package:goodbye_money/models/expense.dart';
+import 'package:goodbye_money/realm.dart';
+import 'package:goodbye_money/utils/destructive_prompt.dart';
 
 import '../pages/categories.dart';
 import '../types/widgets.dart';
@@ -53,7 +57,18 @@ class Settings extends WidgetWithTitle {
                                           const Categories()));
                               break;
                             case 1:
-                              _showAlertDialog(context);
+                              showAlertDialog(
+                                context,
+                                () {
+                                  realm.write(() {
+                                    realm.deleteAll<Expense>();
+                                    realm.deleteAll<Category>();
+                                  });
+                                },
+                                "Are you sure?",
+                                "This action cannot be undone.",
+                                "Erase data",
+                              );
                               break;
                           }
                         },
@@ -78,36 +93,4 @@ class Settings extends WidgetWithTitle {
       ),
     );
   }
-}
-
-// This shows a CupertinoModalPopup which hosts a CupertinoAlertDialog.
-void _showAlertDialog(BuildContext context) {
-  showCupertinoModalPopup<void>(
-    context: context,
-    builder: (BuildContext context) => CupertinoAlertDialog(
-      title: const Text('Are you sure?'),
-      content: const Text('This action cannot be undone.'),
-      actions: <CupertinoDialogAction>[
-        CupertinoDialogAction(
-          /// This parameter indicates this action is the default,
-          /// and turns the action's text to bold text.
-          isDefaultAction: true,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Cancel'),
-        ),
-        CupertinoDialogAction(
-          /// This parameter indicates the action would perform
-          /// a destructive action such as deletion, and turns
-          /// the action's text color to red.
-          isDestructiveAction: true,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Erase data'),
-        ),
-      ],
-    ),
-  );
 }

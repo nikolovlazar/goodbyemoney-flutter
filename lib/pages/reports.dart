@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:goodbye_money/components/charts/monthly_chart.dart';
 import 'package:goodbye_money/components/charts/weekly_chart.dart';
@@ -12,8 +14,10 @@ import 'package:goodbye_money/extensions/expenses_extensions.dart';
 import 'package:goodbye_money/extensions/number_extensions.dart';
 import 'package:goodbye_money/mock/mock_expenses.dart';
 import 'package:goodbye_money/models/expense.dart';
+import 'package:goodbye_money/realm.dart';
 import 'package:goodbye_money/types/period.dart';
 import 'package:goodbye_money/utils/picker_utils.dart';
+import 'package:realm/realm.dart';
 
 import '../types/widgets.dart';
 
@@ -41,7 +45,11 @@ class _ReportsContent extends State<ReportsContent> {
 
   double _spentInPeriod = 0;
   double _avgPerDay = 0;
+
+  StreamSubscription<RealmResultsChanges<Expense>>? _expensesSub;
+  var realmExpenses = realm.all<Expense>();
   List<Expense> _expenses = [];
+
   DateTime _startDate = DateTime.now();
   DateTime _endDate = DateTime.now();
   int get _numberOfPages {
@@ -61,7 +69,8 @@ class _ReportsContent extends State<ReportsContent> {
   int get _selectedPeriodIndex => _periodIndex;
   set _selectedPeriodIndex(int value) {
     _periodIndex = value;
-    setStateValues(value);
+    setStateValues(0);
+    _controller.jumpToPage(0);
   }
 
   @override
@@ -71,8 +80,9 @@ class _ReportsContent extends State<ReportsContent> {
   }
 
   void setStateValues(int page) {
-    var filterResults =
-        mockExpenses.filterByPeriod(periods[_selectedPeriodIndex], page);
+    var filterResults = realmExpenses
+        .toList()
+        .filterByPeriod(periods[_selectedPeriodIndex], page);
 
     var expenses = filterResults[0] as List<Expense>;
     var start = filterResults[1] as DateTime;
@@ -90,6 +100,10 @@ class _ReportsContent extends State<ReportsContent> {
 
   @override
   Widget build(BuildContext context) {
+    _expensesSub ??= realmExpenses.changes.listen((changes) {
+      setStateValues(_controller.page!.toInt());
+    });
+
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         backgroundColor: const Color.fromARGB(0, 0, 0, 0),
@@ -200,7 +214,7 @@ class _ReportsContent extends State<ReportsContent> {
                   (() {
                     switch (_selectedPeriodIndex) {
                       case 1:
-                        return WeeklyChart(expenses: _expenses);
+                        return WeeklyChart(expenses: _expenses.groupWeekly());
                       case 2:
                         return MonthlyChart(
                           expenses: _expenses,
