@@ -33,6 +33,8 @@ class _AddContentState extends State<AddContent> {
   int _selectedRecurrenceIndex = 0;
   int _selectedCategoryIndex = 0;
   DateTime _selectedDate = DateTime.now();
+  bool get canSubmit =>
+      categories.isNotEmpty && _amountController.text.isNotEmpty;
 
   @override
   void initState() {
@@ -223,9 +225,13 @@ class _AddContentState extends State<AddContent> {
                             ),
                           ),
                           child: Text(
-                            categories[_selectedCategoryIndex].name,
+                            categories.isEmpty
+                                ? "Create a category first"
+                                : categories[_selectedCategoryIndex].name,
                             style: TextStyle(
-                              color: categories[_selectedCategoryIndex].color,
+                              color: categories.isEmpty
+                                  ? CupertinoColors.white
+                                  : categories[_selectedCategoryIndex].color,
                             ),
                           ),
                         ),
@@ -235,16 +241,21 @@ class _AddContentState extends State<AddContent> {
                   Container(
                     margin: const EdgeInsets.only(top: 32),
                     child: CupertinoButton(
-                      onPressed: () {},
+                      onPressed: canSubmit ? () {} : null,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 13),
                       color: CupertinoTheme.of(context).primaryColor,
+                      disabledColor: CupertinoTheme.of(context)
+                          .primaryColor
+                          .withAlpha(100),
                       borderRadius: BorderRadius.circular(10),
                       pressedOpacity: 0.7,
-                      child: const Text(
+                      child: Text(
                         "Submit expense",
                         style: TextStyle(
-                          color: Color.fromARGB(255, 255, 255, 255),
+                          color: canSubmit
+                              ? const Color.fromARGB(255, 255, 255, 255)
+                              : const Color.fromARGB(100, 255, 255, 255),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
