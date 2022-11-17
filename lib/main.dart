@@ -1,8 +1,22 @@
+import 'package:sentry_flutter/sentry_flutter.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:goodbye_money/tabs.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  await SentryFlutter.init(
+    (options) => {
+      options.dsn =
+          'https://f67869e3983d4e1698f1c092bd880fb9@o1418292.ingest.sentry.io/4504078280556544',
+      options.tracesSampleRate = 1.0,
+      options.attachScreenshot = true,
+    },
+    appRunner: () => runApp(
+      const SentryScreenshotWidget(
+        child: MyApp(),
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

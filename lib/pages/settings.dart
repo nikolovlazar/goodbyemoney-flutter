@@ -1,8 +1,12 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/cupertino.dart';
 import 'package:goodbye_money/models/category.dart';
 import 'package:goodbye_money/models/expense.dart';
+import 'package:goodbye_money/pages/report_bug.dart';
 import 'package:goodbye_money/realm.dart';
 import 'package:goodbye_money/utils/destructive_prompt.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../pages/categories.dart';
 import '../types/widgets.dart';
@@ -16,6 +20,7 @@ class Item {
 
 const items = [
   Item('Categories', false),
+  Item('Report a bug', false),
   Item('Erase all data', true),
 ];
 
@@ -36,7 +41,7 @@ class Settings extends WidgetWithTitle {
         bottom: true,
         child: Container(
           width: double.infinity,
-          height: 147,
+          height: double.infinity,
           transformAlignment: Alignment.center,
           child: DecoratedBox(
               decoration: BoxDecoration(
@@ -57,6 +62,12 @@ class Settings extends WidgetWithTitle {
                                           const Categories()));
                               break;
                             case 1:
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) => const ReportBug()));
+                              break;
+                            case 2:
                               showAlertDialog(
                                 context,
                                 () {
